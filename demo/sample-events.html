@@ -124,6 +124,9 @@
 			loadChildren: function(event, data) {
 				logEvent(event, data);
 			},
+			loadError: function(event, data) {
+				logEvent(event, data);
+			},
 			postProcess: function(event, data) {
 				logEvent(event, data);
 				// either modify the ajax response directly
@@ -154,6 +157,10 @@
 		}).bind("fancytreeactivate", function(event, data){
 			// alternative way to bind to 'activate' event
 //		    logEvent(event, data);
+		}).on("mouseenter, mouseleave", ".fancytree-title", function(event){
+			// Add a hover handler to all node titles (using event delegation)
+			var node = $.ui.fancytree.getNode(event);
+			node.info(event.type);
 		});
 
 		$("#btnSelect").click(function(event){

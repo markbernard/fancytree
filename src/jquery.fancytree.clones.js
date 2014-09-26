@@ -206,7 +206,6 @@ $.ui.fancytree._FancytreeNodeClass.prototype.isClone = function(){
 
 /**
  * [ext-clones] Update key and/or refKey for an existing node.
- * @param {FancytreeNode} [node]
  * @param {string} key
  * @param {string} refKey
  * @returns {boolean}
@@ -231,7 +230,7 @@ $.ui.fancytree._FancytreeNodeClass.prototype.reRegister = function(key, refKey){
 	// Key has changed: update all references
 	if( key != null && key !== this.key ) {
 		if( keyMap[key] ) {
-			$.error("[ext-clones] reRegister(" + key + "): already exists.");
+			$.error("[ext-clones] reRegister(" + key + "): already exists: " + this);
 		}
 		// Update keyMap
 		delete keyMap[prevKey];
@@ -351,6 +350,11 @@ $.ui.fancytree.registerExtension({
 		// The default implementation loads initial data
 		this._super(ctx);
 	},
+	treeClear: function(ctx){
+		ctx.tree.refMap = {};
+		ctx.tree.keyMap = {};
+		return this._super(ctx);
+	},
 	treeRegisterNode: function(ctx, add, node) {
 		var refList, len,
 			tree = ctx.tree,
@@ -367,7 +371,7 @@ $.ui.fancytree.registerExtension({
 
 		if( add ) {
 			if( keyMap[node.key] != null ) {
-				$.error("clones.treeRegisterNode: node.key already exists: " + node.key);
+				$.error("clones.treeRegisterNode: node.key already exists: " + node);
 			}
 			keyMap[key] = node;
 			if( refKey ) {
